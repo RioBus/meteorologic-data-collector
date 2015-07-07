@@ -29,7 +29,16 @@ function prepareData(data) {
 			data[i] = JSON.parse(data[i]);
 		}
 	}
-	data["timestamp"] = moment(data["timestamp"]).tz("America/Sao_Paulo").format(); // epoch to ISODate
+	
+	var tempDateTime = moment(data["timestamp"]).tz("America/Sao_Paulo");
+	data["timestamp"] = tempDateTime.format(); // epoch to ISODate
+	data["year"] = tempDateTime.year(); 
+	data["month"] =	tempDateTime.month() + 1; // 0 is january
+	data["day"] = tempDateTime.date(); 
+	data["hour"] = tempDateTime.hours(); 
+	data["minute"] = tempDateTime.minutes(); 
+	data["second"] = tempDateTime.seconds(); // for easy aggregation
+	
 	return data;
 }
 
@@ -39,7 +48,7 @@ function insertData(topic,payload) {
 	
 	collection.insert(requestBody, function(err, records) {
 		if (err) throw err;
-		console.log("Record added as "+ records);
+		console.log("Record added as "+records);
 	});
 	
 }
